@@ -5,7 +5,7 @@ import { Text, View } from '@/components/Themed';
 export default function SettingsScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Calls</Text>
+      <Text style={styles.title}>Settings</Text>
     </View>
   );
 }

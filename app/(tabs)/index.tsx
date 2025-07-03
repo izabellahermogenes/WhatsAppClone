@@ -1,11 +1,13 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 import { Stack } from 'expo-router';
-import { Text, View } from '@/components/Themed';
-import { MaterialCommunityIcons, Octicons, Feather, AntDesign } from '@expo/vector-icons';
+import { View } from '@/components/Themed';
+import { MaterialIcons, Ionicons, Feather, AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';  
 import 'react-native-reanimated';
+import ChatListItem from '@/components/ChatListItem';
+import ChatRooms from '@/data/ChatRooms';
+import { ChatRoom } from '@/types';
 
-// Import your separate screen components
 import UpdatesScreen from './UpdatesScreen';
 import CallsScreen from './CallsScreen';
 import CommunitiesScreen from './CommunitiesScreen';
@@ -13,15 +15,44 @@ import SettingsScreen from './SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
-// This is your Chats Screen (main screen)
 function ChatsScreen() {
-  return (
-    <View style={styles.tabContainer}>
-      <Text style={styles.tabText}>Chats</Text>
-      {/* Add your chat list here */}
-      <Text style={styles.subtitle}>Your chat conversations will appear here</Text>
+    // Add debugging to see what's happening
+    console.log('=== ChatsScreen Debug ===');
+    console.log('ChatRooms:', ChatRooms);
+    console.log('ChatRooms length:', ChatRooms?.length);
+    console.log('First chat room:', ChatRooms[0]);
+    
+    return (
+    <View style={styles.container}>
+      <FlatList
+        data={ChatRooms}
+        renderItem={({ item }: { item: ChatRoom }) => {
+          console.log('=== Rendering Item ===');
+          console.log('Item:', item);
+          console.log('Item users:', item.users);
+          
+          // Get the other user (not Vadim/u1)
+          const otherUser = item.users.find(user => user.id !== 'u1') || item.users[0];
+          console.log('Other user found:', otherUser);
+          console.log('Other user name:', otherUser?.name);
+          
+          return (
+            <ChatListItem 
+              avatar={otherUser?.imageUri}
+              username={otherUser?.name || "Unknown"}
+              lastMessage={item.lastMessage.content}
+              time={item.lastMessage.createdAt}
+              onPress={() => {
+                console.log('Pressed chat:', otherUser?.name);
+              }}
+            />
+          );
+        }}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
-  );
+);
 }
 
 const styles = StyleSheet.create({
@@ -34,6 +65,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
+    title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    },
   tabText: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -85,9 +120,9 @@ export default function TabOneScreen() {
               } else if (route.name === 'Calls') {
                 return <Feather name="phone" size={size} color={color} />;
               } else if (route.name === 'Communities') {
-                return <Feather name="users" size={size} color={color} />;
+                return <MaterialIcons name="groups" size={33} color={color} />;
               } else if (route.name === 'Chats') {
-                return <Feather name="message-circle" size={size} color={color} />;
+                return <Ionicons name="chatbubbles-outline" size={27} color={color} />;
               } else if (route.name === 'Settings') {
                 return <Feather name="settings" size={size} color={color} />;
               }
@@ -112,8 +147,8 @@ export default function TabOneScreen() {
         >
           <Tab.Screen name="Updates" component={UpdatesScreen} />
           <Tab.Screen name="Calls" component={CallsScreen} />
-          <Tab.Screen name="Communities" component={CommunitiesScreen} />
           <Tab.Screen name="Chats" component={ChatsScreen} />
+          <Tab.Screen name="Communities" component={CommunitiesScreen} />
           <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
       </View>
