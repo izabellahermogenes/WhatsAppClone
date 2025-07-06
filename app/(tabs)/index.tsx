@@ -1,5 +1,5 @@
 import { StyleSheet, FlatList } from 'react-native';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { View } from '@/components/Themed';
 import { MaterialIcons, Ionicons, Feather, AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';  
@@ -16,43 +16,54 @@ import SettingsScreen from './SettingsScreen';
 const Tab = createBottomTabNavigator();
 
 function ChatsScreen() {
-    // Add debugging to see what's happening
+    const router = useRouter();
+    
     console.log('=== ChatsScreen Debug ===');
     console.log('ChatRooms:', ChatRooms);
     console.log('ChatRooms length:', ChatRooms?.length);
     console.log('First chat room:', ChatRooms[0]);
     
     return (
-    <View style={styles.container}>
-      <FlatList
-        data={ChatRooms}
-        renderItem={({ item }: { item: ChatRoom }) => {
-          console.log('=== Rendering Item ===');
-          console.log('Item:', item);
-          console.log('Item users:', item.users);
-          
-          // Get the other user (not Vadim/u1)
-          const otherUser = item.users.find(user => user.id !== 'u1') || item.users[0];
-          console.log('Other user found:', otherUser);
-          console.log('Other user name:', otherUser?.name);
-          
-          return (
-            <ChatListItem 
-              avatar={otherUser?.imageUri}
-              username={otherUser?.name || "Unknown"}
-              lastMessage={item.lastMessage.content}
-              time={item.lastMessage.createdAt}
-              onPress={() => {
-                console.log('Pressed chat:', otherUser?.name);
-              }}
-            />
-          );
-        }}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-);
+      <View style={styles.container}>
+        <FlatList
+          data={ChatRooms}
+          renderItem={({ item }: { item: ChatRoom }) => {
+            console.log('=== Rendering Item ===');
+            console.log('Item:', item);
+            console.log('Item users:', item.users);
+            
+            const otherUser = item.users.find(user => user.id !== 'u1') || item.users[0];
+            console.log('Other user found:', otherUser);
+            console.log('Other user name:', otherUser?.name);
+            
+            return (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                  <ChatListItem 
+                    avatar={otherUser?.imageUri}
+                    username={otherUser?.name || "Unknown"}
+                    lastMessage={item.lastMessage.content}
+                    time={item.lastMessage.createdAt}
+                    onPress={() => {
+                      console.log('Pressed chat:', otherUser?.name);
+                      router.push({
+                        pathname: '/ChatRoomScreen',
+                        params: {
+                          chatRoomId: item.id,
+                          chatRoomName: otherUser?.name || "Unknown",
+                        }
+                      });
+                    }}
+                  />
+                </View>
+              </View>
+            );
+          }}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -65,10 +76,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-    title: {
+  title: {
     fontSize: 20,
     fontWeight: 'bold',
-    },
+  },
   tabText: {
     fontSize: 18,
     fontWeight: 'bold',

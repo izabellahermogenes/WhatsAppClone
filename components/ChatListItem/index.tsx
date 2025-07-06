@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import styles from '@/components/ChatListItem/style';
-import ChatRooms from '@/data/ChatRooms';
+import { ChatRoom } from "@/types";
 import moment from 'moment';
 
 interface ChatListItemProps {
@@ -39,7 +39,7 @@ const ChatListItem: React.FC<ChatListItemProps> = ({
         </View>
       </View>
       <Text style={styles.time}>
-        {moment(ChatRooms[0].lastMessage.createdAt).format("DD/MM/YY")}
+        {moment(time).format("DD/MM/YY")}
       </Text>
     </TouchableOpacity>
   );
