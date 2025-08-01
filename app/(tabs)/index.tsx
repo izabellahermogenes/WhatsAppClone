@@ -46,13 +46,40 @@ function ChatsScreen() {
                     time={item.lastMessage.createdAt}
                     onPress={() => {
                       console.log('Pressed chat:', otherUser?.name);
-                      router.push({
-                        pathname: '/ChatRoomScreen',
-                        params: {
-                          chatRoomId: item.id,
-                          chatRoomName: otherUser?.name || "Unknown",
+                      console.log('Navigating to chat with ID:', item.id);
+                      
+                      try {
+                        router.push({
+                          pathname: '/(tabs)/ChatRoomScreen',
+                          params: {
+                            chatRoomId: item.id,
+                            chatRoomName: otherUser?.name || "Unknown",
+                          }
+                        });
+                        
+                      } catch (error) {
+                        console.error('Navigation error:', error);
+                        try {
+                          // Fixed: Use push instead of navigate for consistency
+                          router.push({
+                            pathname: '/(tabs)/ChatRoomScreen',
+                            params: {
+                              chatRoomId: item.id,
+                              chatRoomName: otherUser?.name || "Unknown",
+                            }
+                          });
+                        } catch (fallbackError) {
+                          console.error('Second attempt failed:', fallbackError);
+                          // Final fallback with simpler path
+                          router.push({
+                            pathname: '/ChatRoomScreen',
+                            params: {
+                              chatRoomId: item.id,
+                              chatRoomName: otherUser?.name || "Unknown",
+                            }
+                          });
                         }
-                      });
+                      }
                     }}
                   />
                 </View>
@@ -110,7 +137,7 @@ export default function TabOneScreen() {
                 flexDirection: 'row', 
                 width: 60, 
                 justifyContent: 'space-between', 
-                marginRight: 10 
+                marginRight: 20 
               }}
               lightColor="transparent"
               darkColor="transparent"

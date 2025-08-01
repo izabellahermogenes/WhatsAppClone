@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import styles from '@/components/ChatListItem/style';
-import { ChatRoom } from "@/types";
+import ChatRoom  from "@/data/ChatRooms";
 import moment from 'moment';
 
 interface ChatListItemProps {
@@ -19,6 +19,10 @@ const ChatListItem: React.FC<ChatListItemProps> = ({
   time,
   onPress
 }) => {
+
+  const onClick = () => {
+    navigation.navigate('ChatRoom', { id: ChatRoom.id })
+  }
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.leftContainer}>

@@ -10,9 +10,11 @@ import {
   TextInput,
   StatusBar,
 } from 'react-native';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 interface SettingsItemProps {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   onPress: () => void;
   showArrow?: boolean;
@@ -22,7 +24,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({ icon, title, onPress, showA
   return (
     <TouchableOpacity style={styles.settingItem} onPress={onPress}>
       <View style={styles.settingContent}>
-        <Text style={styles.settingIcon}>{icon}</Text>
+        <View style={styles.settingIcon}>{icon}</View>
         <Text style={styles.settingTitle}>{title}</Text>
       </View>
       {showArrow && <Text style={styles.arrow}>›</Text>}
@@ -43,9 +45,7 @@ const ProfileSection: React.FC = () => {
         <Text style={styles.profileName}>Iza</Text>
         <Text style={styles.profileStatus}>Available</Text>
       </View>
-      <View style={styles.qrCode}>
-        <Text style={styles.qrIcon}>⬛</Text>
-      </View>
+        <MaterialCommunityIcons name="qrcode-scan" size={24} color="black" />
     </TouchableOpacity>
   );
 };
@@ -60,7 +60,7 @@ const SettingsScreen: React.FC = () => {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.searchContainer}>
           <View style={styles.searchBar}>
-            <Text style={styles.searchIcon}>🔍</Text>
+            <Feather name="search" size={18} color="grey"/>
             <TextInput
               style={styles.searchInput}
               placeholder="Search"
@@ -72,68 +72,58 @@ const SettingsScreen: React.FC = () => {
         </View>
 
         <ProfileSection />
-
+        
         <View style={styles.section}>
           <SettingsItem
-            icon="👤"
-            title="Avatar"
-            onPress={() => console.log('Avatar pressed')}
-          />
-        </View>
-
-        <View style={styles.section}>
-          <SettingsItem
-            icon="📋"
+            icon={<MaterialCommunityIcons name="account-box-multiple-outline" size={24} color="outline" />}
             title="Lists"
-            onPress={() => console.log('Lists pressed')}
+            onPress={() => console.log('Account pressed')}
           />
           <SettingsItem
-            icon="📢"
+            icon={<MaterialCommunityIcons name="bullhorn-outline" size={24} color="black" />}
             title="Broadcast messages"
             onPress={() => console.log('Broadcast pressed')}
           />
           <SettingsItem
-            icon="⭐"
+            icon={<MaterialCommunityIcons name="star-outline" size={24} color="black" />}
             title="Starred"
             onPress={() => console.log('Starred pressed')}
           />
           <SettingsItem
-            icon="💻"
+            icon={<MaterialCommunityIcons name="laptop" size={24} color="black" />}
             title="Linked devices"
             onPress={() => console.log('Linked devices pressed')}
           />
         </View>
 
-        {/* Third Section */}
         <View style={styles.section}>
           <SettingsItem
-            icon="🔑"
+            icon={<MaterialCommunityIcons name="key-variant" size={24} color="black" />}
             title="Account"
             onPress={() => console.log('Account pressed')}
           />
           <SettingsItem
-            icon="🔒"
+            icon={<MaterialCommunityIcons name="lock-outline" size={24} color="black" />}
             title="Privacy"
             onPress={() => console.log('Privacy pressed')}
           />
           <SettingsItem
-            icon="💬"
+            icon={<MaterialCommunityIcons name="chat-outline" size={24} color="black" />}
             title="Chats"
             onPress={() => console.log('Chats pressed')}
           />
           <SettingsItem
-            icon="🔔"
+            icon={<MaterialCommunityIcons name="bell-outline" size={24} color="black" />}
             title="Notifications"
             onPress={() => console.log('Notifications pressed')}
           />
           <SettingsItem
-            icon="📊"
+            icon={<MaterialCommunityIcons name="chart-arc" size={24} color="black" />}
             title="Storage and data"
             onPress={() => console.log('Storage pressed')}
           />
         </View>
 
-        {/* Bottom padding */}
         <View style={styles.bottomPadding} />
       </ScrollView>
     </SafeAreaView>
@@ -162,7 +152,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#0000',
   },
   searchBar: {
     flexDirection: 'row',
@@ -172,15 +162,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
-  searchIcon: {
-    fontSize: 16,
-    marginRight: 8,
-    color: '#666',
-  },
+  
   searchInput: {
     flex: 1,
     fontSize: 16,
     color: '#000',
+    marginLeft: 8
   },
   profileSection: {
     flexDirection: 'row',
@@ -213,13 +200,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-  qrCode: {
-    padding: 8,
-  },
-  qrIcon: {
-    fontSize: 20,
-    color: '#000',
-  },
   section: {
     backgroundColor: '#fff',
     marginTop: 12,
@@ -241,10 +221,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   settingIcon: {
-    fontSize: 18,
     marginRight: 16,
     width: 24,
-    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   settingTitle: {
     fontSize: 16,
