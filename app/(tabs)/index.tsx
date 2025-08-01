@@ -24,7 +24,7 @@ function ChatsScreen() {
     console.log('First chat room:', ChatRooms[0]);
     
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: '#fff' }]}>
         <FlatList
           data={ChatRooms}
           renderItem={({ item }: { item: ChatRoom }) => {
@@ -60,7 +60,7 @@ function ChatsScreen() {
                       } catch (error) {
                         console.error('Navigation error:', error);
                         try {
-                          // Fixed: Use push instead of navigate for consistency
+
                           router.push({
                             pathname: '/(tabs)/ChatRoomScreen',
                             params: {
@@ -70,7 +70,7 @@ function ChatsScreen() {
                           });
                         } catch (fallbackError) {
                           console.error('Second attempt failed:', fallbackError);
-                          // Final fallback with simpler path
+                          
                           router.push({
                             pathname: '/ChatRoomScreen',
                             params: {
@@ -132,19 +132,20 @@ export default function TabOneScreen() {
           headerTintColor: '#fff',
           headerTitleAlign: 'left',
           headerRight: () => (
-            <View 
-              style={{
-                flexDirection: 'row', 
-                width: 60, 
-                justifyContent: 'space-between', 
-                marginRight: 20 
-              }}
-              lightColor="transparent"
-              darkColor="transparent"
-            >
-              <Feather name="camera" size={22} color="white" />
-              <AntDesign name="pluscircle" size={22} color="white" />
-            </View>
+            <>
+              <Feather 
+                name="camera" 
+                size={22} 
+                color="white" 
+                style={{ marginRight: 20 }}
+              />
+              <AntDesign 
+                name="pluscircle" 
+                size={22} 
+                color="white" 
+                style={{ marginRight: 15 }}
+              />
+            </>
           ),
         }}
       />
