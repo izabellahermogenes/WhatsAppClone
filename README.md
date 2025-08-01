@@ -1,4 +1,4 @@
-# WhatsApp UI Clone
+# WhatsApp Clone
 
 This is a front-end clone of WhatsApp built with React Native and Expo. I created it to practice building mobile layouts, working with navigation, and getting more comfortable with React Native in general. The goal was to learn and replicate WhatsApp’s interface as closely as possible.
 
